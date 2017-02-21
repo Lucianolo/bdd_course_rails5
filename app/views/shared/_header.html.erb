@@ -19,9 +19,11 @@
             <li><%= link_to "Sign in", new_user_session_path %></li>
           <% end %>
           <% if user_signed_in? %>
+            <li>
             <p class="navbar-text">
               Signed in as <%= "#{current_user.email}" %>
             </p>
+            </li>
           <% end %>
         </ul> 
       </div>
