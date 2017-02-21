@@ -47,9 +47,9 @@ RSpec.describe "Articles", type: :request do
     
   end
   
-  describe 'GET /articles/:id/delete' do
+  describe 'DELETE /articles/:id' do
     context 'with non-signed in user' do
-      before { get "/articles/#{@article.id}/delete"}
+      before { delete "/articles/#{@article.id}"}
       
       it "redirects to the sign in page" do
         expect(response.status).to eq 302
@@ -61,13 +61,13 @@ RSpec.describe "Articles", type: :request do
     context 'with signed in user who is non-owner' do
       before do
         login_as(@fred)
-        get "/articles/#{@article.id}/delete"
+        delete "/articles/#{@article.id}"
       end
       
       it "redirects to the home page" do
         expect(response.status).to eq 302
         flash_message = "You can only delete your own article."
-        expect(flash[:alert]).to eq flash_message
+        expect(flash[:danger]).to eq flash_message
       end
         
     end
@@ -75,11 +75,11 @@ RSpec.describe "Articles", type: :request do
     context 'with signed in user who is owner' do
       before do
         login_as(@john)
-        get "/articles/#{@article.id}/delete"
+        delete "/articles/#{@article.id}"
       end
       
       it "successfully deletes article" do
-        expect(response.status).to eq 200
+        expect(response.status).to eq 302
       end
         
     end
